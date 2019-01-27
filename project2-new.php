@@ -156,11 +156,9 @@ if ($road_map[2][0] > $road_map[2][1]){
 		$final3 = $road_map[2][0];
 	}
 }	
-	var_dump($final3);
+	
 array_push($pass, $final1, $final2, $final3);	
-var_dump($pass);
 $timeFinal =  array_sum($pass);	
-
 echo "<p> Your time is: " . $timeFinal . " seconds";
 }
 
