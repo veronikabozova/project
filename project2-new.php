@@ -52,12 +52,12 @@ if ($road_map[0][0] <= $road_map[0][1]){
 	$final1 = $road_map[0][0];
 }
 
-if ($road_map[0][0] > $road_map[0][1]){
-	$time = $road_map[0][1] + ($road_map[0][1]*2);
-	
-	while ($road_map[0][0] > $time){
-		$time = $time + ($road_map[0][1]*2);
+while ($road_map[0][0] > $road_map[0][1]){
+ 	$road_map[0][1] += $road_map[0][1];
+ 	if ($road_map[0][1] % 2 == 0){
+ 		$road_map[0][1] += $road_map[0][1];	
 	}
+	$time = $road_map[0][1];
 	
 	if (($time - $road_map[0][1]) > $road_map[0][0]){
 		$final1 = $time - $road_map[0][1];
@@ -73,41 +73,43 @@ if ($road_map[0][0] > $road_map[0][1]){
 for ($i = 1; $i < count ($road_map); $i++){ 
 }
 
-if ($final1 > $road_map[1][1]){
+if ($final1 <= $road_map[1][1]){
+	$residue = $road_map[1][1] - $final1;
+	$time = $residue + ($road_map[1][1] * 2);
+}
+
+elseif ($final1 > $road_map[1][1]){
     $num = $final1 / $road_map[1][1];
 	$number = floor($num);
 	$residue = $final1 - ($road_map[1][1] * $number);
 
 	if ($number % 2 == 0){
-		$time = $residue + ($road_map[1][1] * 2);
+		$time = $residue + $road_map[1][1];
 	}
 
 	if ($number % 2 != 0){
-		$time = $residue + $road_map[1][1];
+		$time = $residue + ($road_map[1][1] * 2);
 	}
 }
 
-elseif ($final1 <= $road_map[1][1]){
-	$residue = $road_map[1][1] - $final1;
-	$time = $residue + ($road_map[1][1] * 2);
-}
 
-if ($road_map[1][0] <= $road_map[1][1]){
+if ($road_map[1][0] <= $road_map[1][1] - $final1 || $road_map[1][0] <= $time){
 	$final2 = $road_map[1][0];
 }
 
-if ($road_map[1][0] > $road_map[1][1]){
-	$time = $road_map[1][1] + $road_map[1][1] * 2;
+while ($road_map[1][0] > $time){
+ 	$time += $road_map[1][1];
 
-	while ($road_map[1][0] > $time){
-		$time = $time + ($road_map[1][1] * 2);
+ 	if ($road_map[0][1] % 2 == 0){
+		$time += $road_map[1][1];
 	}
 
-	if (($time - $road_map[1][1]) > $road_map[1][0]){
+
+	if ($road_map[1][0] <= ($time - $road_map[1][1])){
 		$final2 = $time - $road_map[1][1];
 	}
 
-	if (($time - $road_map[1][1]) <= $road_map[1][0]){
+	if ($road_map[1][0] > ($time - $road_map[1][1])){
 		$final2 = $road_map[1][0];
 	}
 }
@@ -118,36 +120,36 @@ if ($road_map[1][0] > $road_map[1][1]){
 for ($i = 2; $i < count ($road_map); $i++){ 
 }
 
-if (($final1 + $final2) > $road_map[2][1]){
+if (($final1 + $final2) <= $road_map[2][1]){
+	$residue = $road_map[2][1] - ($final1 + $final2);
+	$time = $residue + $road_map[2][1];
+}
+
+elseif (($final1 + $final2) > $road_map[2][1]){
 	$num = ($final1 + $final2) / $road_map[2][1];
 	$number = floor($num);
 	$residue = ($final1 + $final2) - ($road_map[2][1] * $number);
 
 	if ($number % 2 == 0){
-		$time = $residue + ($road_map[2][1] * 2);
+		$time = $residue + $road_map[2][1];
 	}
 
 	if ($number % 2 != 0){
-		$time = $residue + $road_map[2][1];
+		$time = $residue + ($road_map[2][1] * 2);
 	}
 }
 
-elseif (($final1 + $final2) <= $road_map[2][1]){
-	$residue = $road_map[2][1] - ($final1 + $final2);
-	$time = $residue + ($road_map[2][1] * 2);
-}
-
-if ($road_map[2][0] <= $road_map[2][1]){
+if ($road_map[2][0] <= $road_map[2][1] - ($final1 + $final2) || $road_map[2][0] <= $time){
 	$final3 = $road_map[2][0];
 }
 
-if ($road_map[2][0] > $road_map[2][1]){
-	$time = $road_map[2][1] + $road_map[2][1]*2;
+while ($road_map[2][0] > $time){
+ 	$time += $road_map[2][1];
 
-	while ($road_map[2][0] > $time){
-		$time = $time + ($road_map[2][1]*2);
+ 	if ($road_map[2][1] % 2 == 0){
+		$time += $road_map[1][1];
 	}
-
+	
 	if (($time - $road_map[2][1]) > $road_map[2][0]){
 		$final3 = $time - $road_map[2][1];
 	}
@@ -156,9 +158,14 @@ if ($road_map[2][0] > $road_map[2][1]){
 		$final3 = $road_map[2][0];
 	}
 }	
-	
+//var_dump($time);
+
 array_push($pass, $final1, $final2, $final3);	
+
+//var_dump($pass);
+
 $timeFinal =  array_sum($pass);	
+
 echo "<p> Your time is: " . $timeFinal . " seconds";
 }
 
